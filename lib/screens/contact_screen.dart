@@ -1,27 +1,21 @@
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:form_app/screens/details_screen.dart';
-import 'package:form_app/widgets/general_text_field.dart';
+  import 'package:flutter/material.dart';
+  import 'package:flutter/services.dart';
+  import 'package:form_app/screens/details_screen.dart';
+  import 'package:form_app/widgets/general_text_field.dart';
 
-class HomeScreen extends StatelessWidget {
- 
-
-
-  final formkey = GlobalKey<FormState>();
-
-  final nameController = TextEditingController();
-  final ageController = TextEditingController();
-  final addressController = TextEditingController();
-  final passwordController = TextEditingController();
- 
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
+  class ContactScreen extends StatelessWidget {
+    final formkey = GlobalKey<FormState>();
+    final nameController = TextEditingController();
+    final ageController = TextEditingController();
+    final addressController = TextEditingController();
+    final passwordController = TextEditingController();
+  
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+        title: const Text('Contact Form'),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -52,9 +46,7 @@ class HomeScreen extends StatelessWidget {
                    }
                    return null;
                  },
-                 ),
-
-                  
+                 ),   
                 const SizedBox(height: 10.0),
                   
                 //for Age input
@@ -82,9 +74,7 @@ class HomeScreen extends StatelessWidget {
                  },
 
                  ),
-               
-               
-                  
+                   
                 const SizedBox(height: 10.0),
                 //for Address input
                 const Text('Address'),
@@ -132,9 +122,11 @@ class HomeScreen extends StatelessWidget {
                       if(formkey.currentState!.validate()){
                         formkey.currentState!.save();
                         // print('$name, $age, $address');
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>DetailsScreen(nameController.text,int.parse(ageController.text),ageController.text),),);
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>DetailsScreen(nameController.text,int.parse(ageController.text),ageController.text),
+                        ),
+                        );
           
-                      };
+                      }
                       
                     },
                     child: const Text('Submit'),

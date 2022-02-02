@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:form_app/screens/home_screen.dart';
+import 'package:form_app/screens/contact_screen.dart';
+import 'package:form_app/screens/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       
         primarySwatch: Colors.blue,
       ),
-      home:  HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }

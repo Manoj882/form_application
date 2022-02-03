@@ -1,6 +1,7 @@
 
   import 'package:flutter/material.dart';
   import 'package:flutter/services.dart';
+import 'package:form_app/screens/constants/constant.dart';
   import 'package:form_app/screens/details_screen.dart';
   import 'package:form_app/widgets/general_text_field.dart';
 
@@ -21,10 +22,7 @@
       ),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 16.0,
-        ),
+       padding: basePadding,
         child: Form(
           key: formkey,
           child: SingleChildScrollView(

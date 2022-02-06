@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GeneralAlertDialog{
-  customAlertDialog(BuildContext context){
+  customLoadingDialog(BuildContext context){
     return showDialog(
       context: context, 
       builder: (context){
@@ -21,5 +21,33 @@ class GeneralAlertDialog{
         );
       },
       );
+  }
+
+   Future<bool> customAlertDialog(BuildContext context) async {
+    //  bool toExit = false;
+
+    final toExit = await showDialog<bool>(
+      context: context, 
+      builder: (_) => AlertDialog(
+      title: const Text('Do you want to exit?'),
+      actions: [
+        TextButton(
+          onPressed: (){
+            Navigator.of(context).pop(true);
+            
+          },
+          child: const Text('Yes'),
+        ),
+         TextButton(
+          onPressed: (){
+            Navigator.of(context).pop(false);
+          },
+          child: const Text('No'),
+        ),
+      ],
+    ),
+    );
+    return toExit!  ;
+
   }
 }

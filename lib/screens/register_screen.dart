@@ -8,6 +8,8 @@ import 'package:form_app/widgets/general_radio_button.dart';
 import 'package:form_app/widgets/general_switch.dart';
 import 'package:form_app/widgets/general_text_field.dart';
 
+import 'login_screen.dart';
+
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({ Key? key }) : super(key: key);
 
@@ -155,11 +157,6 @@ class RegisterScreen extends StatelessWidget {
                       const Text('Gender'),
                       GeneralRadioButton(changeRadioValue),
                      
-            
-            
-                    
-            
-              
                       getSizedBox(20),
             
                       Center(
@@ -182,7 +179,11 @@ class RegisterScreen extends StatelessWidget {
                               print('The email is '+emailController.text);
                               print('The privacy and policy is '+checkboxController.text);
                               print('The gender from radio button is '+radioGenderController.text);
-              
+
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => LoginScreen(),
+                                ),
+                                );
                             }
                           }
                         }, 
@@ -190,17 +191,12 @@ class RegisterScreen extends StatelessWidget {
                           'Sign Up',
                           ),
                         ),
-                      ),
-                    
-                    
-                  
+                      ), 
                 ],
               ),
             ),
           ),
           ),
-    
-      
         
       ),
     );

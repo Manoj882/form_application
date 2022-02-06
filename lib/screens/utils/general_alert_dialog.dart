@@ -26,7 +26,7 @@ class GeneralAlertDialog{
    Future<bool> customAlertDialog(BuildContext context) async {
     //  bool toExit = false;
 
-    final toExit = await showDialog<bool>(
+    return await showDialog(
       context: context, 
       builder: (_) => AlertDialog(
       title: const Text('Do you want to exit?'),
@@ -47,7 +47,7 @@ class GeneralAlertDialog{
       ],
     ),
     );
-    return toExit!  ;
+   
 
   }
 }

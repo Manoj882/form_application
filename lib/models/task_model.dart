@@ -11,7 +11,7 @@ class TaskModel{
 
   TaskModel.fromJson(Map obj){
     userId = obj['userId'];
-    userId = obj['title'];
+    title = obj['title'];
     completed = obj['completed'];
   }
 }

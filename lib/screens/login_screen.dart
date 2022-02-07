@@ -4,6 +4,7 @@ import 'package:form_app/screens/register_screen.dart';
 import 'package:form_app/screens/utils/general_alert_dialog.dart';
 import 'package:form_app/widgets/general_text_field.dart';
 import 'package:form_app/screens/contact_screen.dart';
+import 'package:hive/hive.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({ Key? key }) : super(key: key);
@@ -15,126 +16,133 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign In'),
-        centerTitle: true,
-        elevation: 0.0,
-      ),
-
-      body: Padding(
-        padding: basePadding,
-
-        child: SingleChildScrollView(
-          child: Form(
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    'Sign in with your credentials',
-                    style: Theme.of(context).textTheme.headline6,
+    return WillPopScope(
+       onWillPop: () => GeneralAlertDialog().customAlertDialog(context),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Sign In'),
+          centerTitle: true,
+          elevation: 0.0,
+        ),
+    
+        body: Padding(
+          padding: basePadding,
+    
+          child: SingleChildScrollView(
+            child: Form(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Text(
+                      'Sign in with your credentials',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10.0,),
-                Center(
-                  child: Text(
-                    'Login here',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
-          
-                const SizedBox(height: 30.0,),
-          
-                const Text('Username'),
-                const SizedBox(height: 5.0,),
-                GeneralTextField(
-                  title: 'username', 
-                  controller: usernameController, 
-                  textInputType: TextInputType.name, 
-                  textInputAction: TextInputAction.next, 
-                  validate: (value) => value!.trim().isEmpty
-                  ? 'Please enter your username'
-                  :null,
-                  ),
-          
                   const SizedBox(height: 10.0,),
-          
-                  const Text('Password'),
+                  Center(
+                    child: Text(
+                      'Login here',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ),
+            
+                  const SizedBox(height: 30.0,),
+            
+                  const Text('Username'),
                   const SizedBox(height: 5.0,),
                   GeneralTextField(
-                    title: 'password', 
-                    controller: passwordController, 
+                    title: 'username', 
+                    controller: usernameController, 
                     textInputType: TextInputType.name, 
-                    textInputAction: TextInputAction.done, 
-                    validate: (value) => value!.trim().isEmpty 
-                    ? 'Please enter your password'
-                    : null,
+                    textInputAction: TextInputAction.next, 
+                    validate: (value) => value!.trim().isEmpty
+                    ? 'Please enter your username'
+                    :null,
                     ),
-          
+            
                     const SizedBox(height: 10.0,),
-          
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                        final username = usernameController.text;
-                        final password = passwordController.text;
-                        GeneralAlertDialog().customLoadingDialog(context);
-                        await Future.delayed(
-                          const Duration(seconds: 3),
-                        );
-                      
-                        Navigator.pop(context);
-                        if(username == 'manoj' && password =='manoj123'){
-                          Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => ContactScreen(),
-                          ),
-                          );
-                          
-                        }
-                        else{
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Invalid details',
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        }
-                        
-                      }, 
-                      child: const Text('Login'),
+            
+                    const Text('Password'),
+                    const SizedBox(height: 5.0,),
+                    GeneralTextField(
+                      title: 'password', 
+                      controller: passwordController, 
+                      textInputType: TextInputType.name, 
+                      textInputAction: TextInputAction.done, 
+                      validate: (value) => value!.trim().isEmpty 
+                      ? 'Please enter your password'
+                      : null,
                       ),
-                    ),
-
-                    const SizedBox(height: 10),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Don't have an Account?",
-                        ),
-
-                        TextButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterScreen(),
-                          ),
+            
+                      const SizedBox(height: 10.0,),
+            
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                          final username = usernameController.text;
+                          final password = passwordController.text;
+                          GeneralAlertDialog().customLoadingDialog(context);
+                          
+                          final box = await Hive.openBox(UserConstants.credentialBox);
+                          await Future.delayed(
+                            const Duration(seconds: 2),
                           );
+                          final boxUsername = box.get(UserConstants.usernameKey);
+                          final boxPassword = box.get(UserConstants.passwordKey);
+                        
+                          Navigator.pop(context);
+                          if(username == boxUsername && password == boxPassword){
+                            Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => ContactScreen(),
+                            ),
+                            );
+                            
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Invalid details',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          }
+                          
                         }, 
-                        child: const Text('Register'),
+                        child: const Text('Login'),
                         ),
-                      ],
-                    ),
-
-                  
-              ],
+                      ),
+    
+                      const SizedBox(height: 10),
+    
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Don't have an Account?",
+                          ),
+    
+                          TextButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterScreen(),
+                            ),
+                            );
+                          }, 
+                          child: const Text('Register'),
+                          ),
+                        ],
+                      ),
+    
+                    
+                ],
+              ),
             ),
           ),
         ),
+        
       ),
-      
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:form_app/models/task_model.dart';
 import 'package:form_app/screens/call_api_screen.dart';
 import 'package:form_app/screens/constants/constant.dart';
 import 'package:form_app/screens/constants/urls.dart';
@@ -59,8 +62,17 @@ class DetailsScreen extends StatelessWidget {
               GeneralAlertDialog().customLoadingDialog(context);
               final response = await http.get(Uri.parse(getAllTodos));
               Navigator.of(context).pop();
+              print(response.statusCode);
+              final decodedResponse = jsonDecode(response.body) as List;
+              List <TaskModel> tasksList = [];
+              // print(decodedResponse);
+              // print(decodedResponse.runtimeType);
+              for(var eachResponse in decodedResponse){
+                tasksList.add(TaskModel.fromJson(eachResponse));
+              }
+              print('The length of task model list is ${tasksList.length}');
               // print(response.body);
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => CallApiScreen(response.body),
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => CallApiScreen(tasksList),
               ),
               );
             }, 

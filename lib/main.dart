@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:form_app/screens/contact_screen.dart';
 import 'package:form_app/screens/login_screen.dart';
 import 'package:form_app/screens/register_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final dir = await getApplicationDocumentsDirectory();
+  print(dir.path);
+  Hive.init(dir.path);
   runApp(const MyApp());
 }
 

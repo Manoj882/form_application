@@ -196,16 +196,39 @@ class RegisterScreen extends StatelessWidget {
                             GeneralAlertDialog().customLoadingDialog(context);
                             final box = await Hive.openBox(UserConstants.credentialBox);
                             await Future.delayed(const Duration(seconds: 2));
-                            await box.put(UserConstants.usernameKey, usernameController.text);
-                            await box.put(UserConstants.passwordKey, passwordController.text);
-                            Navigator.of(context).pop();
 
-                            
+                            final usernameList = box.get(
+                              UserConstants.usernameKey,
+                              defaultValue: [],
+                            );
+                            final passwordList = box.get(
+                              UserConstants.passwordKey,
+                              defaultValue: []
+                            );
+                            // print(usernameList.toString()); 
+                            if(usernameList.contains(usernameController.text)){
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'User already exists',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                            else{
+                            usernameList.add(usernameController.text);
+                            passwordList.add(passwordController.text);
 
+                            await box.put(UserConstants.usernameKey, usernameList);
+                            await box.put(UserConstants.passwordKey, passwordList);
+                           
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (_) => LoginScreen(),
                               ),
                               );
+                          }
                           }
                         }
                       }, 

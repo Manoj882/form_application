@@ -89,26 +89,50 @@ class LoginScreen extends StatelessWidget {
                           await Future.delayed(
                             const Duration(seconds: 2),
                           );
-                          final boxUsername = box.get(UserConstants.usernameKey);
-                          final boxPassword = box.get(UserConstants.passwordKey);
-                        
+
+                         
+
+                          final List usernameList = box.get(
+                            UserConstants.usernameKey,
+                            defaultValue: [],
+                          );
+                          final List passwordList = box.get(
+                            UserConstants.passwordKey,
+                            defaultValue: [],
+                          );
+
+                          // print(usernameList.toString());
+                          final boxIndex = usernameList.indexOf(usernameController.text);
+                          // print(boxIndex);
                           Navigator.pop(context);
-                          if(username == boxUsername && password == boxPassword){
+                          if(boxIndex >= 0){
+                          if(password == passwordList[boxIndex]){
                             Navigator.of(context).push(MaterialPageRoute(
                             builder: (_) => ContactScreen(),
                             ),
-                            );
-                            
+                            );  
                           }
                           else{
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                  'Invalid details',
+                                  'Password did not match',
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                             );
+                          }
+                          }
+                          else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'User does not exist',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+
                           }
                           
                         }, 
